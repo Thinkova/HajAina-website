@@ -9,11 +9,12 @@ import { Calendar, User, ArrowRight, Search } from "lucide-react"
 import Image from "next/image"
 import Header from "@/components/header"
 import Footer from "@/components/footer" 
-import articles from "@/data/articles.json";
+import { articleService } from "@/lib/services"
 
 export default function MagazinePage() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const categories = ["all", "Tradition", "Durabilité", "Portrait", "Tendances", "Société", "Matériaux"]
+  const articles = articleService.getAll()
   const filteredArticles =
     selectedCategory === "all" ? articles : articles.filter((article) => article.category === selectedCategory)
   const featuredArticle = articles.find((article) => article.featured)

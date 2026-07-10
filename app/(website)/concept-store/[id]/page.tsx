@@ -23,8 +23,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import allProducts from "@/data/products.json"
-import allStylistes from "@/data/stylistes.json"
+import { productService, stylisteService } from "@/lib/services"
 
 export default function ProductDetailPage() {
   const {id} = useParams()
@@ -39,10 +38,10 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     setLoading(true)
-    const foundProduct = allProducts.find((p) => p.id === id)
+    const foundProduct = productService.getById(id as string)
     if (foundProduct) {
       setProduct(foundProduct)
-      const foundStyliste = allStylistes.find((s) => s.id === foundProduct.designerId)
+      const foundStyliste = stylisteService.getById(foundProduct.designerId)
       setStyliste(foundStyliste)
     } else {
       router.push("/concept-store")

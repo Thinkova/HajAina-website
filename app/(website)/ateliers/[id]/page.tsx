@@ -25,8 +25,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import allAteliers from "@/data/ateliers.json"
-import allStylistes from "@/data/stylistes.json"
+import { atelierService, stylisteService } from "@/lib/services"
 
 const certIcons: Record<string, any> = {
   leaf: Leaf,
@@ -46,10 +45,10 @@ export default function AtelierVirtuelPage() {
 
   useEffect(() => {
     setLoading(true)
-    const foundAtelier = allAteliers.find((a) => a.id === id)
+    const foundAtelier = atelierService.getById(id as string)
     if (foundAtelier) {
       setAtelier(foundAtelier)
-      const foundStyliste = allStylistes.find((s) => s.id === foundAtelier.stylisteId)
+      const foundStyliste = stylisteService.getById(foundAtelier.stylisteId)
       setStyliste(foundStyliste)
     } else {
       router.push("/ateliers")

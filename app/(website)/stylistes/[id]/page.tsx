@@ -9,7 +9,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import allStylistes from "@/data/stylistes.json";
+import { stylisteService } from "@/lib/services"
 
 export default function StylisteProfilePage() {
   const { id } = useParams()
@@ -20,7 +20,7 @@ export default function StylisteProfilePage() {
   // Simulate fetching stylist data
   useEffect(() => {
     setLoading(true)
-    const foundStyliste = allStylistes.find((s) => s.id === id)
+    const foundStyliste = stylisteService.getById(id as string)
     if (foundStyliste) {
       setStyliste(foundStyliste)
     } else {

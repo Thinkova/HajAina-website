@@ -8,11 +8,12 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import allAteliers from "@/data/ateliers.json"
-import allStylistes from "@/data/stylistes.json"
+import { atelierService, stylisteService } from "@/lib/services"
 
 export default function AteliersPage() {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const allAteliers = atelierService.getAll()
+  const allStylistes = stylisteService.getAll()
 
   return (
       <div className="min-h-screen bg-white text-black pt-20">

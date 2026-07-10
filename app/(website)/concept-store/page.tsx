@@ -8,11 +8,12 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import allProducts from "@/data/products.json"
+import { productService } from "@/lib/services"
 
 export default function ConceptStorePage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
 
+  const allProducts = productService.getAll()
   const categories = ["all", ...new Set(allProducts.map((p) => p.category))]
   const filteredProducts =
       selectedCategory === "all"

@@ -7,9 +7,11 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import stylistes from "@/data/stylistes.json";
+import { stylisteService } from "@/lib/services"
 
 export default function StylistesPage() {
+
+  const stylistes = stylisteService.getAll()
 
   return (
     <div className="min-h-screen bg-white text-black pt-20">
