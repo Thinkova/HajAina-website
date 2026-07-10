@@ -17,12 +17,12 @@
         "featuredCollections": [
             {
             "title": "Collection Eté 2024",
-            "image": "/placeholder.svg?height=400&width=300&text=Miora+Autumn+Collection",
+            "image": "/img/Collection3.jpg",
             "link": "/collections/1"
             },
             {
             "title": "Heritage Moderne",
-            "image": "/placeholder.svg?height=400&width=300&text=Miora+Heritage+Collection",
+            "image": "/img/Collection4.jpg",
             "link": "/collections/4"
             }
         ]
@@ -44,12 +44,12 @@
         "featuredCollections": [
             {
             "title": "Eco-Luxe Series",
-            "image": "/placeholder.svg?height=400&width=300&text=Hery+Eco-Luxe+Collection",
+            "image": "/img/Collection1.jpg",
             "link": "/collections/2"
             },
             {
             "title": "Soie Sauvage",
-            "image": "/placeholder.svg?height=400&width=300&text=Hery+Wild+Silk+Collection",
+            "image": "/img/Collection5.jpg",
             "link": "/collections/5"
             }
         ]
@@ -71,12 +71,12 @@
         "featuredCollections": [
             {
             "title": "Urban Malagasy",
-            "image": "/placeholder.svg?height=400&width=300&text=Lalaina+Urban+Collection",
+            "image": "/img/Collection2.jpg",
             "link": "/collections/3"
             },
             {
             "title": "Nouvelle Vague",
-            "image": "/placeholder.svg?height=400&width=300&text=Lalaina+New+Wave+Collection",
+            "image": "/img/Collection6.jpg",
             "link": "/collections/6"
             }
         ]

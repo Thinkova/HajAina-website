@@ -77,31 +77,42 @@ export default function AtelierVirtuelPage() {
         <section className="relative h-[80vh] min-h-[600px] overflow-hidden">
           {/* Video Background */}
           <div className="absolute inset-0 bg-[#0b0b0b]">
-            <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                className={`w-full h-full object-cover transition-opacity duration-1000 ${
-                    isPlaying ? "opacity-60" : "opacity-30"
-                }`}
-            >
-              <source src={atelier.videoUrl} type="video/mp4"/>
-            </video>
+            {atelier.videoUrl ? (
+              <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className={`w-full h-full object-cover transition-opacity duration-1000 ${
+                      isPlaying ? "opacity-60" : "opacity-30"
+                  }`}
+              >
+                <source src={atelier.videoUrl} type="video/mp4"/>
+              </video>
+            ) : (
+              <Image
+                src={atelier.coverImage}
+                alt={atelier.name}
+                fill
+                className="object-cover opacity-60"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"/>
           </div>
 
           {/* Play/Pause Control */}
-          <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="absolute top-24 right-6 z-20 bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30 transition-colors"
-          >
-            {isPlaying ? (
-                <Pause className="h-5 w-5 text-white"/>
-            ) : (
-                <Play className="h-5 w-5 text-white"/>
-            )}
-          </button>
+          {atelier.videoUrl && (
+            <button
+                onClick={() => setIsPlaying(!isPlaying)}
+                className="absolute top-24 right-6 z-20 bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30 transition-colors"
+            >
+              {isPlaying ? (
+                  <Pause className="h-5 w-5 text-white"/>
+              ) : (
+                  <Play className="h-5 w-5 text-white"/>
+              )}
+            </button>
+          )}
 
           {/* Hero Content */}
           <div className="absolute inset-0 z-10 flex items-end">
