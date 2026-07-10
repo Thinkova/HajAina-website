@@ -1,16 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { Plus, Calendar, Sparkles } from "lucide-react"
+import { Calendar, Plus, Shirt, Sparkles } from "lucide-react"
 import WardrobeUpload from "@/components/wardrobe/wardrobe-upload"
 import WardrobeGallery from "@/components/wardrobe/wardrobe-gallery"
 import OutfitPlanner from "@/components/wardrobe/outfit-planner"
 import AIAnalysis from "@/components/wardrobe/ai-analysis"
+import DressingVirtuel from "@/components/wardrobe/dressing-virtuel"
 import Header from "@/components/header"
-import Footer from "@/components/footer"
 
 export default function WardrobePage() {
-  const [activeTab, setActiveTab] = useState<"upload" | "gallery" | "planner" | "analysis">("gallery")
+  const [activeTab, setActiveTab] = useState<"upload" | "gallery" | "planner" | "analysis" | "mixmatch">("gallery")
   const [wardrobeItems, setWardrobeItems] = useState([
     {
       id: "1",
@@ -104,6 +104,16 @@ export default function WardrobePage() {
             >
               <Sparkles className="h-4 w-4" /> Analyses
             </button>
+            <button
+                onClick={() => setActiveTab("mixmatch")}
+                className={`px-6 py-3 tracking-[0.1em] uppercase text-sm font-light transition-all flex items-center gap-2 ${
+                    activeTab === "mixmatch"
+                        ? "bg-black text-white"
+                        : "bg-white text-black hover:bg-gray-100 border border-gray-200"
+                }`}
+            >
+              <Shirt className="h-4 w-4"/> Mix & Match
+            </button>
           </div>
 
           {/* Content */}
@@ -114,6 +124,7 @@ export default function WardrobePage() {
             )}
             {activeTab === "planner" && <OutfitPlanner items={wardrobeItems} />}
             {activeTab === "analysis" && <AIAnalysis items={wardrobeItems} />}
+            {activeTab === "mixmatch" && <DressingVirtuel/>}
           </div>
         </div>
       </section>

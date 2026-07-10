@@ -1,0 +1,177 @@
+[
+  {
+    "id": "1",
+    "title": "Robe Lambda en Soie Sauvage",
+    "designer": "Miora Rasoanaivo",
+    "designerId": "1",
+    "collectionId": "1",
+    "image": "/img/Collection3.jpg",
+    "gallery": [
+      "/img/Collection3.jpg",
+      "/img/Collection3.jpg",
+      "/img/Collection3.jpg"
+    ],
+    "price": "150 000 Ar",
+    "category": "Robes",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "description": "Une robe élégante en soie sauvage malgache, tissée à la main par nos artisans. Chaque pièce est unique, reflétant la beauté naturelle de cette matière précieuse.",
+    "passport": {
+      "origin": "Fianarantsoa, Madagascar",
+      "material": "Soie sauvage (Landibe)",
+      "co2Saved": "2.4 kg",
+      "waterSaved": "1 200 litres",
+      "workHours": "45 heures",
+      "artisanName": "Soavina",
+      "techniques": [
+        "Tissage à la main",
+        "Teinture naturelle"
+      ],
+      "certifications": [
+        "GOTS",
+        "Fair Trade"
+      ]
+    },
+    "preorder": {
+      "target": 20,
+      "current": 14,
+      "deadline": "2024-03-15",
+      "status": "active"
+    }
+  },
+  {
+    "id": "2",
+    "title": "Veste Upcycled Denim",
+    "designer": "Hery Andriantsoa",
+    "designerId": "2",
+    "collectionId": "2",
+    "image": "/img/Collection1.jpg",
+    "gallery": [
+      "/img/Collection1.jpg",
+      "/img/Collection1.jpg",
+      "/img/Collection1.jpg"
+    ],
+    "price": "200 000 Ar",
+    "category": "Vestes",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "description": "Veste en denim recyclé, design circulaire pensé pour durer. Chaque veste est unique grâce aux variations naturelles du recyclage.",
+    "passport": {
+      "origin": "Antananarivo, Madagascar",
+      "material": "Denim recyclé (100%)",
+      "co2Saved": "3.8 kg",
+      "waterSaved": "2 500 litres",
+      "workHours": "32 heures",
+      "artisanName": "Andry",
+      "techniques": [
+        "Upcycling textile",
+        "Construction zéro déchet"
+      ],
+      "certifications": [
+        "OEKO-TEX",
+        "B-Corp"
+      ]
+    },
+    "preorder": {
+      "target": 15,
+      "current": 8,
+      "deadline": "2024-03-20",
+      "status": "active"
+    }
+  },
+  {
+    "id": "3",
+    "title": "T-Shirt Graphique Malgache",
+    "designer": "Lalaina Rakoto",
+    "designerId": "3",
+    "collectionId": "3",
+    "image": "/img/Collection2.jpg",
+    "gallery": [
+      "/img/Collection2.jpg",
+      "/img/Collection2.jpg",
+      "/img/Collection2.jpg"
+    ],
+    "price": "80 000 Ar",
+    "category": "Tops",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "description": "T-shirt streetwear aux motifs inspirés de l'art urbain malgache. Coton bio et impressions éco-responsables.",
+    "passport": {
+      "origin": "Toamasina, Madagascar",
+      "material": "Coton bio (100%)",
+      "co2Saved": "1.2 kg",
+      "waterSaved": "800 litres",
+      "workHours": "8 heures",
+      "artisanName": "Hanta",
+      "techniques": [
+        "Impression sérigraphie",
+        "Teinture végétale"
+      ],
+      "certifications": [
+        "Fair Trade"
+      ]
+    },
+    "preorder": {
+      "target": 30,
+      "current": 22,
+      "deadline": "2024-03-10",
+      "status": "active"
+    }
+  },
+  {
+    "id": "4",
+    "title": "Écharpe Lamba Moderne",
+    "designer": "Miora Rasoanaivo",
+    "designerId": "1",
+    "collectionId": "4",
+    "image": "/img/Collection4.jpg",
+    "gallery": [
+      "/img/Collection4.jpg",
+      "/img/Collection4.jpg",
+      "/img/Collection4.jpg"
+    ],
+    "price": "120 000 Ar",
+    "category": "Accessoires",
+    "sizes": [
+      "Unique"
+    ],
+    "description": "Écharpe en lamba traditionnel revisité, symbole de l'héritage malgache dans un design contemporain.",
+    "passport": {
+      "origin": "Antananarivo, Madagascar",
+      "material": "Lamba hoany (coton local)",
+      "co2Saved": "1.8 kg",
+      "waterSaved": "900 litres",
+      "workHours": "28 heures",
+      "artisanName": "Fara",
+      "techniques": [
+        "Tissage traditionnel",
+        "Broderie main"
+      ],
+      "certifications": [
+        "GOTS",
+        "Fair Trade"
+      ]
+    },
+    "preorder": {
+      "target": 25,
+      "current": 18,
+      "deadline": "2024-03-25",
+      "status": "active"
+    }
+  }
+]

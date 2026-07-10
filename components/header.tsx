@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { LogOut, Menu, X, User, ShoppingCart, Bell, UserCircle, Settings, ChevronDown } from "lucide-react"
+import { Bell, ChevronDown, LogOut, Menu, Settings, ShoppingCart, User, UserCircle, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAnimation } from "@/animations"
-import { Dropdown, DropdownItem, DropdownSeparator } from "@/components/ui/custom-dropdown"
+import { Dropdown, DropdownItem } from "@/components/ui/custom-dropdown"
 
 function useHeaderState() {
   const pathname = usePathname()
@@ -63,6 +63,7 @@ export function HeaderDesktop() {
             {[
               ["/", "Couverture"],
               ["/collections", "Collections"],
+              ["/ateliers", "Ateliers"],
               ["/stylistes", "Stylistes"],
               ["/ethique", "Éthique"],
               ["/recyclage", "Recyclage"],
@@ -178,6 +179,7 @@ export function HeaderMobile() {
               {[
                 ["/", "Couverture"],
                 ["/collections", "Collections"],
+                ["/ateliers", "Ateliers"],
                 ["/stylistes", "Stylistes"],
                 ["/ethique", "Éthique"],
                 ["/recyclage", "Recyclage"],
