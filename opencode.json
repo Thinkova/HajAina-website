@@ -1,0 +1,18 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": {
+    "paths": [
+      ".opencode/skills"
+    ]
+  },
+  "references": {
+    "data": {
+      "path": "data",
+      "description": "Static JSON data files for collections, stylistes, fondation, collaborations, articles"
+    },
+    "animations": {
+      "path": "animations",
+      "description": "GSAP animation system — timelines, hooks, config, and constants"
+    }
+  }
+}
