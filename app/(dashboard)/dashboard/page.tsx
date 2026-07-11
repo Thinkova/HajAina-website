@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,43 +14,138 @@ import {
   GalleryHorizontal,
   Sparkles,
   Settings,
-  LogOut,
+  ShoppingCart,
+  Package,
+  BarChart3,
+  BookMarked,
+  Heart,
 } from "lucide-react";
 import Header from "@/components/header";
-import Link from "next/link"; // Import Link
-import Footer from "@/components/footer"; 
+import Link from "next/link";
+import Footer from "@/components/footer";
+
+interface DashboardCard {
+  title: string
+  description: string
+  href: string
+  icon: React.ReactNode
+  roles: ("createur" | "consommateur")[]
+}
+
+const ALL_CARDS: DashboardCard[] = [
+  {
+    title: "Mon profile",
+    description: "Gérer vos informations personnelles.",
+    href: "/user-profile",
+    icon: <User className="h-8 w-8 text-black" />,
+    roles: ["createur", "consommateur"],
+  },
+  {
+    title: "Ma garde-robe",
+    description: "Gérer vos vêtements et vos habitudes vestimentaires.",
+    href: "/wardrobe",
+    icon: <Briefcase className="h-8 w-8 text-black" />,
+    roles: ["createur", "consommateur"],
+  },
+  {
+    title: "Conseiller vestimentaire",
+    description: "Utiliser l'IA pour vous conseiller dans vos tenues.",
+    href: "/chat",
+    icon: <Sparkles className="h-8 w-8 text-black" />,
+    roles: ["createur", "consommateur"],
+  },
+  {
+    title: "Paramètres du compte",
+    description: "Gérer vos paramètres de compte et préférences.",
+    href: "/settings",
+    icon: <Settings className="h-8 w-8 text-black" />,
+    roles: ["createur", "consommateur"],
+  },
+  {
+    title: "Mon blog",
+    description: "Créer et gérer vos articles de blog.",
+    href: "/blog",
+    icon: <BookOpen className="h-8 w-8 text-black" />,
+    roles: ["createur"],
+  },
+  {
+    title: "Ma boutique",
+    description: "Gérer votre boutique et vos produits.",
+    href: "/shop",
+    icon: <Store className="h-8 w-8 text-black" />,
+    roles: ["createur"],
+  },
+  {
+    title: "Mes collections",
+    description: "Gérer vos collections et pièces.",
+    href: "/collections/gestion",
+    icon: <Palette className="h-8 w-8 text-black" />,
+    roles: ["createur"],
+  },
+  {
+    title: "Projets & Marketplace",
+    description: "Gérer vos partenariats et projets collaboratifs.",
+    href: "/collaborations",
+    icon: <Handshake className="h-8 w-8 text-black" />,
+    roles: ["createur"],
+  },
+  {
+    title: "Exposition en ligne",
+    description: "Gérer vos expositions et événements.",
+    href: "/expositions",
+    icon: <GalleryHorizontal className="h-8 w-8 text-black" />,
+    roles: ["createur"],
+  },
+  {
+    title: "Mon panier",
+    description: "Consulter votre panier et finaliser vos achats.",
+    href: "/shopping-cart",
+    icon: <ShoppingCart className="h-8 w-8 text-black" />,
+    roles: ["consommateur"],
+  },
+  {
+    title: "Mes commandes",
+    description: "Suivre l'état de vos commandes.",
+    href: "/mes-commandes",
+    icon: <Package className="h-8 w-8 text-black" />,
+    roles: ["consommateur"],
+  },
+  {
+    title: "Mon impact",
+    description: "Découvrir votre impact environnemental.",
+    href: "/mon-impact",
+    icon: <Heart className="h-8 w-8 text-black" />,
+    roles: ["consommateur"],
+  },
+  {
+    title: "Studio analytics",
+    description: "Analyser les performances de votre boutique.",
+    href: "/studio/analytics",
+    icon: <BarChart3 className="h-8 w-8 text-black" />,
+    roles: ["createur"],
+  },
+]
 
 export default function DashboardPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const { isLoggedIn, roles, userEmail, loaded, logout } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    const role = localStorage.getItem("userRole");
-    const email = localStorage.getItem("userEmail");
-
-    if (!loggedIn) {
-      router.push("/login");
-    } else {
-      setIsLoggedIn(true);
-      setUserRole(role);
-      setUserEmail(email);
-    }
-  }, [router]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userEmail");
-    router.push("/");
-  };
-
-  if (!isLoggedIn) {
-    return null; // Or a loading spinner
+  if (loaded && !isLoggedIn) {
+    router.push("/login");
+    return null;
   }
 
+  if (!loaded || !isLoggedIn) {
+    return null;
+  }
+
+  const visibleCards = ALL_CARDS.filter((card) =>
+    card.roles.some((role) => roles.includes(role))
+  );
+
+  const creatorCards = visibleCards.filter((c) => c.roles.includes("createur") && !c.roles.includes("consommateur"));
+  const consumerCards = visibleCards.filter((c) => c.roles.includes("consommateur") && !c.roles.includes("createur"));
+  const sharedCards = visibleCards.filter((c) => c.roles.includes("createur") && c.roles.includes("consommateur"));
 
   return (
     <div className="min-h-screen bg-white text-black pt-20">
@@ -65,126 +160,83 @@ export default function DashboardPage() {
             <p className="text-gray-600 max-w-3xl mx-auto font-light leading-relaxed text-lg">
               Bienvenue, {userEmail} !
             </p>
+            <div className="flex justify-center gap-2 mt-4">
+              {roles.map((role) => (
+                <span
+                  key={role}
+                  className="px-3 py-1 text-xs tracking-[0.1em] uppercase font-light bg-black text-white rounded-full"
+                >
+                  {role === "createur" ? "Créateur" : "Passionné"}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 mt-16">
-            {/* Mon profile */}
-            <Card className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <User className="h-8 w-8 text-black" />
-                </div>
-                <h3 className="text-xl font-light mb-4 serif-font tracking-wide">Mon profile</h3>
-                <p className="text-gray-600 font-light leading-relaxed mb-6">Gérer vos informations personnelles.</p>
-                <Link href="/user-profile">
-                  <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
-                </Link>
-              </CardContent>
-            </Card>
-            {/* Mon blog */}
-            <Card className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <BookOpen className="h-8 w-8 text-black" />
-                </div>
-                <h3 className="text-xl font-light mb-4 serif-font tracking-wide">Mon blog</h3>
-                <p className="text-gray-600 font-light leading-relaxed mb-6">Créer et gérer vos articles de blog.</p>
-                <Link href="/blog">
-                  <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
-                </Link>
-              </CardContent>
-            </Card>
-            {/* Ma boutique */}
-            <Card className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Store className="h-8 w-8 text-black" />
-                </div>
-                <h3 className="text-xl font-light mb-4 serif-font tracking-wide">Ma boutique</h3>
-                <p className="text-gray-600 font-light leading-relaxed mb-6">Gérer votre boutique et vos produits.</p>
-                <Link href="/shop">
-                  <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
-                </Link>
-              </CardContent>
-            </Card>
-            {/* Ma garde robe */}
-            <Card className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Briefcase className="h-8 w-8 text-black" />
-                </div>
-                <h3 className="text-xl font-light mb-4 serif-font tracking-wide">Ma garde-robe</h3>
-                <p className="text-gray-600 font-light leading-relaxed mb-6">Gérer vos vêtements et vos habitudes vestimentaires.</p>
-                <Link href="/wardrobe">
-                  <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
-                </Link>
-              </CardContent>
-            </Card>
-            {/* Mes collections */}
-            <Card className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Palette className="h-8 w-8 text-black" />
-                </div>
-                <h3 className="text-xl font-light mb-4 serif-font tracking-wide">Mes collections</h3>
-                <p className="text-gray-600 font-light leading-relaxed mb-6">Gérer vos collections et pièces.</p>
-                <Link href="/collections/gestion">
-                  <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
-                </Link>
-              </CardContent>
-            </Card>
-            {/* Mes collaborations */}
-            <Card className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Handshake className="h-8 w-8 text-black" />
-                </div>
-                <h3 className="text-xl font-light mb-4 serif-font tracking-wide">Projets & Marketplace</h3>
-                <p className="text-gray-600 font-light leading-relaxed mb-6">Gérer vos partenariats et projets collaboratifs.</p>
-                <Link href="/collaborations">
-                  <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
-                </Link>
-              </CardContent>
-            </Card>
-            {/* Mes expositions */}
-            <Card className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <GalleryHorizontal className="h-8 w-8 text-black" />
-                </div>
-                <h3 className="text-xl font-light mb-4 serif-font tracking-wide">Exposition en ligne</h3>
-                <p className="text-gray-600 font-light leading-relaxed mb-6">Gérer vos expositions et événements.</p>
-                <Link href="/expositions">
-                  <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
-                </Link>
-              </CardContent>
-            </Card>
-            {/* Suite IA */}
-            <Card className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Sparkles className="h-8 w-8 text-black" />
-                </div>
-                <h3 className="text-xl font-light mb-4 serif-font tracking-wide">Conseiller vestimentaire</h3>
-                <p className="text-gray-600 font-light leading-relaxed mb-6">Utiliser l'IA pour vous conseiller dans vos tenues.</p>
-                <Link href="/chat">
-                  <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
-                </Link>
-              </CardContent>
-            </Card>
-            {/* Parametres du compte */}
-            <Card className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Settings className="h-8 w-8 text-black" />
-                </div>
-                <h3 className="text-xl font-light mb-4 serif-font tracking-wide">Parametres du compte</h3>
-                <p className="text-gray-600 font-light leading-relaxed mb-6">Gérer vos paramètres de compte et préférences.</p>
-                <Link href="/settings">
-                  <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
+
+          {sharedCards.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-2xl font-light serif-font mb-8">Espace commun</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+                {sharedCards.map((card) => (
+                  <Card key={card.href} className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
+                    <CardContent className="p-8">
+                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        {card.icon}
+                      </div>
+                      <h3 className="text-xl font-light mb-4 serif-font tracking-wide">{card.title}</h3>
+                      <p className="text-gray-600 font-light leading-relaxed mb-6">{card.description}</p>
+                      <Link href={card.href}>
+                        <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {creatorCards.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-2xl font-light serif-font mb-8">Espace créateur</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+                {creatorCards.map((card) => (
+                  <Card key={card.href} className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
+                    <CardContent className="p-8">
+                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        {card.icon}
+                      </div>
+                      <h3 className="text-xl font-light mb-4 serif-font tracking-wide">{card.title}</h3>
+                      <p className="text-gray-600 font-light leading-relaxed mb-6">{card.description}</p>
+                      <Link href={card.href}>
+                        <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {consumerCards.length > 0 && (
+            <div className="mb-12">
+              <h2 className="text-2xl font-light serif-font mb-8">Espace passionné</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+                {consumerCards.map((card) => (
+                  <Card key={card.href} className="py-2 bg-white text-center border-0 shadow-none hover:shadow-lg transition-all duration-300">
+                    <CardContent className="p-8">
+                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        {card.icon}
+                      </div>
+                      <h3 className="text-xl font-light mb-4 serif-font tracking-wide">{card.title}</h3>
+                      <p className="text-gray-600 font-light leading-relaxed mb-6">{card.description}</p>
+                      <Link href={card.href}>
+                        <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase">Accéder</Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
       <Footer />

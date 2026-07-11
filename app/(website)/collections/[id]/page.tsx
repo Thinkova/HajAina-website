@@ -9,7 +9,7 @@ import { ArrowLeft, ShoppingCart, QrCode } from "lucide-react";
 import Image from "next/image";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import allCollections from "@/data/collections.json";
+import { collectionService } from "@/lib/services"
 import { QRCodeGenerator } from "@/components/qr-code-generator";
 import { Modal } from "@/components/ui/modal";
 
@@ -23,7 +23,7 @@ export default function CollectionDetailPage() {
   // Simulate fetching collection data
   useEffect(() => {
     setLoading(true);
-    const foundCollection = allCollections.find((col) => col.id === id);
+    const foundCollection = collectionService.getById(id as string);
     if (foundCollection) {
       setCollection(foundCollection);
     } else {

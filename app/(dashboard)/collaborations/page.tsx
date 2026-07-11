@@ -31,7 +31,7 @@ import {
 import Image from "next/image"
 import { useState } from "react"
 import Assistant from "@/components/Assistant"
-import collaborationData from "@/data/collaboration-data.json"
+import { collaborationService } from "@/lib/services"
 import Link from "next/link"
 
 export default function CollaborationsPage() {
@@ -112,7 +112,7 @@ export default function CollaborationsPage() {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {collaborationData.conversations.map((conv) => (
+                  {collaborationService.getConversations().map((conv) => (
                     <Card key={conv.id} className={`hover:shadow-md transition-all duration-200`}>
                       <CardContent className="p-4">
                         <div className="flex items-start space-x-4">
@@ -167,7 +167,7 @@ export default function CollaborationsPage() {
                   </CardHeader>
                   <CardContent className="relative p-10 min-h-[600px] bg-gray-50">
                     <div className="space-y-4 max-h-96 overflow-y-auto mb-4">
-                      {collaborationData.messages.map((message) => (
+                      {collaborationService.getMessages().map((message) => (
                         <div key={message.id} className={`flex ${message.isOwn ? "justify-end" : "justify-start"}`}>
                           <div
                             className={`max-w-[80%] px-4 py-2 rounded-lg ${
@@ -237,7 +237,7 @@ export default function CollaborationsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {collaborationData.servicesByCategory[activeMarketplaceCategory]?.map((service) => (
+                  {collaborationService.getServicesByCategory(activeMarketplaceCategory)?.map((service) => (
                     <Card key={service.id} className="overflow-hidden hover:shadow-lg transition-all">
                       <div className="relative h-48">
                         <Image
@@ -396,7 +396,7 @@ export default function CollaborationsPage() {
                   </div>
                   
                   <div className="space-y-3">
-                    {collaborationData.todos.map((todo) => (
+                    {collaborationService.getTodos().map((todo) => (
                       <Card key={todo.id} className="p-4">
                         <div className="flex items-start gap-3">
                           <CheckSquare className={`w-5 h-5 mt-1 ${todo.completed ? "text-green-500" : "text-gray-400"}`} />

@@ -1,0 +1,194 @@
+[
+  {
+    "id": "1",
+    "stylisteId": "1",
+    "name": "Atelier Miora Rasoanaivo",
+    "tagline": "Où la tradition rencontre l'innovation",
+    "videoUrl": "",
+    "coverImage": "/img/Miora.jpg",
+    "location": "Antananarivo, Madagascar",
+    "founded": "2009",
+    "artisansCount": 12,
+    "certifications": [
+      {
+        "name": "GOTS",
+        "label": "Global Organic Textile Standard",
+        "description": "Certification pour l'utilisation de fibres biologiques et de processus de production respectueux de l'environnement",
+        "icon": "leaf"
+      },
+      {
+        "name": "Fair Trade",
+        "label": "Commerce Équitable",
+        "description": "Garantie de conditions de travail justes et de rémunération équitable pour tous les artisans",
+        "icon": "handshake"
+      }
+    ],
+    "upcyclingProcess": [
+      {
+        "step": 1,
+        "title": "Collecte des Matériaux",
+        "description": "Nous récupérons des tissus traditionnels malgaches et des fibres naturelles auprès de communautés locales",
+        "image": "/img/artisant1.jpg"
+      },
+      {
+        "step": 2,
+        "title": "Tri & Sélection",
+        "description": "Chaque matériau est soigneusement trié et sélectionné pour garantir la qualité et la durabilité",
+        "image": "/img/artisant2.jpg"
+      },
+      {
+        "step": 3,
+        "title": "Transformation Créative",
+        "description": "Nos artisans transforment les matériaux en nouvelles pièces uniques avec techniques traditionnelles",
+        "image": "/img/Collection3.jpg"
+      },
+      {
+        "step": 4,
+        "title": "Finition & Contrôle",
+        "description": "Chaque pièce est minutieusement finie et contrôlée avant de rejoindre notre collection",
+        "image": "/img/Collection4.jpg"
+      }
+    ],
+    "impactStats": {
+      "co2Saved": "2.4 tonnes",
+      "waterSaved": "15 000 litres",
+      "wasteReduced": "85%",
+      "localEmployment": "12 artisans"
+    },
+    "workshopDescription": "Notre atelier est un espace où tradition et innovation se rencontrent. Chaque jour, nos artisans perpétuent les techniques ancestrales de tissage et de broderie malgache tout en expérimentant de nouvelles approches durables. L'atelier fonctionne à l'énergie solaire et utilise des teintures naturelles issues de plantes locales.",
+    "gallery": [
+      "/img/Miora.jpg",
+      "/img/artisant1.jpg",
+      "/img/artisant2.jpg",
+      "/img/Collection3.jpg"
+    ]
+  },
+  {
+    "id": "2",
+    "stylisteId": "2",
+    "name": "Atelier Hery Andriantsoa",
+    "tagline": "L'innovation au service de la planète",
+    "videoUrl": "",
+    "coverImage": "/img/Hery.jpg",
+    "location": "Fianarantsoa, Madagascar",
+    "founded": "2012",
+    "artisansCount": 50,
+    "certifications": [
+      {
+        "name": "GOTS",
+        "label": "Global Organic Textile Standard",
+        "description": "Certification pour l'utilisation de fibres biologiques et de processus de production respectueux de l'environnement",
+        "icon": "leaf"
+      },
+      {
+        "name": "OEKO-TEX",
+        "label": "Standard 100",
+        "description": "Test et certification des articles textiles pour la sécurité et l'innocuité de leurs composants",
+        "icon": "shield"
+      },
+      {
+        "name": "B-Corp",
+        "label": "B Corporation",
+        "description": "Entreprise certifiée répondant aux normes les plus élevées de performance sociale et environnementale",
+        "icon": "award"
+      }
+    ],
+    "upcyclingProcess": [
+      {
+        "step": 1,
+        "title": "Collecte Industrielle",
+        "description": "Nous récupérons les chutes de tissus des grandes maisons de mode et les vêtements usagés",
+        "image": "/img/before1.jpg"
+      },
+      {
+        "step": 2,
+        "title": "Démantèlement",
+        "description": "Les vêtements sont démontés pièce par pièce pour récupérer les textiles encore exploitables",
+        "image": "/img/before2.jpg"
+      },
+      {
+        "step": 3,
+        "title": "Innovation Material",
+        "description": "Nos ingénieurs textiles créent de nouveaux mélanges et textures à partir des fibres récupérées",
+        "image": "/img/after1.jpg"
+      },
+      {
+        "step": 4,
+        "title": "Design Circulaire",
+        "description": "Les nouvelles pièces sont conçues pour être facilement recyclables en fin de vie",
+        "image": "/img/after2.jpg"
+      }
+    ],
+    "impactStats": {
+      "co2Saved": "8.7 tonnes",
+      "waterSaved": "45 000 litres",
+      "wasteReduced": "92%",
+      "localEmployment": "50 artisans"
+    },
+    "workshopDescription": "Notre atelier est une usine modèle de l'économie circulaire. Fonçant entièrement à l'énergie solaire, nous avons développé des procédés innovants de recyclage textile qui permettent de transformer des déchets en matériaux précieux. Notre objectif : zéro déchet d'ici 2025.",
+    "gallery": [
+      "/img/Hery.jpg",
+      "/img/before1.jpg",
+      "/img/after1.jpg",
+      "/img/Collection1.jpg"
+    ]
+  },
+  {
+    "id": "3",
+    "stylisteId": "3",
+    "name": "Atelier Lalaina Rakoto",
+    "tagline": "L'audace urbaine rencontre l'âme malgache",
+    "videoUrl": "",
+    "coverImage": "/img/Lalaina.jpg",
+    "location": "Toamasina, Madagascar",
+    "founded": "2016",
+    "artisansCount": 8,
+    "certifications": [
+      {
+        "name": "Fair Trade",
+        "label": "Commerce Équitable",
+        "description": "Garantie de conditions de travail justes et de rémunération équitable pour tous les artisans",
+        "icon": "handshake"
+      }
+    ],
+    "upcyclingProcess": [
+      {
+        "step": 1,
+        "title": "Inspiration Urbaine",
+        "description": "Nous puisons notre inspiration dans les rues de Toamasina et la culture urbaine malgache",
+        "image": "/img/Collection2.jpg"
+      },
+      {
+        "step": 2,
+        "title": "Design Participatif",
+        "description": "Les clients peuvent personnaliser leurs pièces et participer au processus créatif",
+        "image": "/img/Collection5.jpg"
+      },
+      {
+        "step": 3,
+        "title": "Production Localisée",
+        "description": "Chaque pièce est produite dans notre atelier avec un suivi personnalisé",
+        "image": "/img/Collection6.jpg"
+      },
+      {
+        "step": 4,
+        "title": "Lancement Communautaire",
+        "description": "Les collections sont lancées lors d'événements communautaires interactifs",
+        "image": "/img/ethique-image.jpg"
+      }
+    ],
+    "impactStats": {
+      "co2Saved": "1.2 tonnes",
+      "waterSaved": "8 000 litres",
+      "wasteReduced": "78%",
+      "localEmployment": "8 artisans"
+    },
+    "workshopDescription": "Notre atelier est un laboratoire créatif où la jeunesse malgache s'exprime à travers la mode. Nous mélangeons streetwear, art urbain et identité malgache pour créer des pièces qui parlent à la nouvelle génération. Chaque collection est une œuvre collaborative avec notre communauté.",
+    "gallery": [
+      "/img/Lalaina.jpg",
+      "/img/Collection2.jpg",
+      "/img/Collection5.jpg",
+      "/img/Collection6.jpg"
+    ]
+  }
+]

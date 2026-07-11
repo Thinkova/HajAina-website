@@ -7,11 +7,11 @@ import Image from "next/image"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import Link from "next/link"
-import fondationData from "@/data/fondation-data.json";
+import { fondationService } from "@/lib/services"
 
 export default function EthiquePage() {
-  const foundationValues = fondationData.foundationValues;
-  const foundationImpacts = fondationData.foundationImpacts;
+  const foundationValues = fondationService.getValues();
+  const foundationImpacts = fondationService.getImpacts();
 
   const getIcon = (name: string) => {
     switch(name) {

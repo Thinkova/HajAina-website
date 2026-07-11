@@ -1,16 +1,20 @@
 "use client"
 
 import { useState } from "react"
-import { Plus, Calendar, Sparkles } from "lucide-react"
+import { Calendar, Plus, Shirt, Sparkles } from "lucide-react"
 import WardrobeUpload from "@/components/wardrobe/wardrobe-upload"
 import WardrobeGallery from "@/components/wardrobe/wardrobe-gallery"
 import OutfitPlanner from "@/components/wardrobe/outfit-planner"
 import AIAnalysis from "@/components/wardrobe/ai-analysis"
+import DressingVirtuel from "@/components/wardrobe/dressing-virtuel"
 import Header from "@/components/header"
-import Footer from "@/components/footer"
+import { useAuth } from "@/hooks/use-auth"
+
+type TabKey = "gallery" | "upload" | "planner" | "analysis" | "mixmatch"
 
 export default function WardrobePage() {
-  const [activeTab, setActiveTab] = useState<"upload" | "gallery" | "planner" | "analysis">("gallery")
+  const { isCreator } = useAuth()
+  const [activeTab, setActiveTab] = useState<TabKey>("gallery")
   const [wardrobeItems, setWardrobeItems] = useState([
     {
       id: "1",
@@ -44,6 +48,16 @@ export default function WardrobePage() {
     },
   ])
 
+  const tabs: { key: TabKey; label: string; icon: React.ReactNode; creatorOnly: boolean }[] = [
+    { key: "gallery", label: "Galerie", icon: null, creatorOnly: false },
+    { key: "upload", label: "Ajouter", icon: <Plus className="h-4 w-4" />, creatorOnly: true },
+    { key: "planner", label: "Planning", icon: <Calendar className="h-4 w-4" />, creatorOnly: false },
+    { key: "analysis", label: "Analyses", icon: <Sparkles className="h-4 w-4" />, creatorOnly: true },
+    { key: "mixmatch", label: "Mix & Match", icon: <Shirt className="h-4 w-4" />, creatorOnly: true },
+  ]
+
+  const visibleTabs = tabs.filter((tab) => !tab.creatorOnly || isCreator())
+
   return (
     <div className="min-h-screen pt-20">
       <Header />
@@ -54,7 +68,7 @@ export default function WardrobePage() {
             <h1 className="text-4xl md:text-6xl font-extralight tracking-[0.2em] mb-6 serif-font">Ma garde-robe</h1>
             <div className="w-32 h-px bg-black mx-auto mb-8" />
             <p className="text-gray-600 max-w-3xl mx-auto font-light leading-relaxed text-lg">
-              Gérez votre garde-robe, mettez des vêtements réspectant la mode éthique et durable.
+              Gérez votre garde-robe, mettez des vêtements respectant la mode éthique et durable.
             </p>
           </div>
         </div>
@@ -64,56 +78,30 @@ export default function WardrobePage() {
       <section className="py-8 border-b border-gray-100">
         <div className="container mx-auto px-6">
           <div className="flex gap-4 my-6 md:ml-10 flex-wrap">
-            <button
-              onClick={() => setActiveTab("gallery")}
-              className={`px-6 py-3 tracking-[0.1em] uppercase text-sm font-light transition-all ${
-                activeTab === "gallery"
-                  ? "bg-black text-white"
-                  : "bg-white text-black hover:bg-gray-100 border border-gray-200"
-              }`}
-            >
-              Galerie
-            </button>
-            <button
-              onClick={() => setActiveTab("upload")}
-              className={`px-6 py-3 tracking-[0.1em] uppercase text-sm font-light transition-all flex items-center gap-2 ${
-                activeTab === "upload"
-                  ? "bg-black text-white"
-                  : "bg-white text-black hover:bg-gray-100 border border-gray-200"
-              }`}
-            >
-              <Plus className="h-4 w-4" /> Ajouter
-            </button>
-            <button
-              onClick={() => setActiveTab("planner")}
-              className={`px-6 py-3 tracking-[0.1em] uppercase text-sm font-light transition-all flex items-center gap-2 ${
-                activeTab === "planner"
-                  ? "bg-black text-white"
-                  : "bg-white text-black hover:bg-gray-100 border border-gray-200"
-              }`}
-            >
-              <Calendar className="h-4 w-4" /> Planning
-            </button>
-            <button
-              onClick={() => setActiveTab("analysis")}
-              className={`px-6 py-3 tracking-[0.1em] uppercase text-sm font-light transition-all flex items-center gap-2 ${
-                activeTab === "analysis"
-                  ? "bg-black text-white"
-                  : "bg-white text-black hover:bg-gray-100 border border-gray-200"
-              }`}
-            >
-              <Sparkles className="h-4 w-4" /> Analyses
-            </button>
+            {visibleTabs.map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`px-6 py-3 tracking-[0.1em] uppercase text-sm font-light transition-all flex items-center gap-2 ${
+                  activeTab === tab.key
+                    ? "bg-black text-white"
+                    : "bg-white text-black hover:bg-gray-100 border border-gray-200"
+                }`}
+              >
+                {tab.icon} {tab.label}
+              </button>
+            ))}
           </div>
 
           {/* Content */}
           <div className="bg-white rounded-lg shadow-sm">
             {activeTab === "gallery" && <WardrobeGallery items={wardrobeItems} />}
-            {activeTab === "upload" && (
+            {activeTab === "upload" && isCreator() && (
               <WardrobeUpload onItemsAdded={(items) => setWardrobeItems([...wardrobeItems, ...items])} />
             )}
             {activeTab === "planner" && <OutfitPlanner items={wardrobeItems} />}
-            {activeTab === "analysis" && <AIAnalysis items={wardrobeItems} />}
+            {activeTab === "analysis" && isCreator() && <AIAnalysis items={wardrobeItems} />}
+            {activeTab === "mixmatch" && isCreator() && <DressingVirtuel/>}
           </div>
         </div>
       </section>

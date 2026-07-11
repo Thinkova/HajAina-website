@@ -9,11 +9,12 @@ import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import collections from "@/data/collections.json";
+import { collectionService } from "@/lib/services"
 
 export default function CollectionsPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [selectedCategory, setSelectedCategory] = useState("all")
+  const collections = collectionService.getAll()
   const categories = ["all", "Couture", "Durable", "Streetwear", "Fusion", "Avant-garde"]
   const filteredCollections =
     selectedCategory === "all"

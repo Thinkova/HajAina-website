@@ -6,22 +6,21 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowLeft, ChevronLeft, ChevronRight, Handshake } from "lucide-react"
+import { ArrowLeft, ChevronLeft, ChevronRight, Handshake, Palette, ShoppingBag } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import SocialButton from "@/components/ui/social-button"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { userStore } from "@/lib/stores/user-store"
+import type { UserRole } from "@/types/auth"
 
-// Login Component
 const LoginForm = ({ onError, users }: any) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const router = useRouter()
-
 
   const handleLogin = (e: any) => {
     e.preventDefault()
@@ -37,15 +36,12 @@ const LoginForm = ({ onError, users }: any) => {
     )
 
     if (user) {
-      localStorage.setItem("isLoggedIn", "true")
-      localStorage.setItem("userRole", 'creator')
-      localStorage.setItem("userEmail", email)
+      userStore.login(user.roles || ["consommateur"], email)
       router.push("/dashboard")
     } else {
       onError("Email ou mot de passe incorrect.")
     }
   }
-
 
   return (
     <form onSubmit={handleLogin} className="text-white space-y-6 mt-6">
@@ -90,33 +86,52 @@ const LoginForm = ({ onError, users }: any) => {
   )
 }
 
-// Step 1: Role Selection
-const RoleSelectionStep = ({ role, setRole, onNext }: any) => {
-  const handleNext = () => {
-    if (!role) return
-    onNext()
+const RoleSelectionStep = ({ roles, setRoles, onNext }: any) => {
+  const toggleRole = (role: UserRole) => {
+    setRoles((prev: UserRole[]) =>
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
+    )
   }
 
   return (
     <div className="text-white space-y-6">
-      <div className="text-white space-y-2">
-        <Label className="text-white font-light tracking-wide text-md">Vous êtes : *</Label>
-        <Select value={role} onValueChange={setRole}>
-          <SelectTrigger className="text-white border-gray-700 w-full">
-            <SelectValue placeholder="Sélectionnez votre profil" />
-          </SelectTrigger>
-          <SelectContent className="text-white border-gray-700 z-10 bg-black/95">
-            <SelectItem value="createur">Créateur de mode</SelectItem>
-            <SelectItem value="prestataire">Artisant / Prestataire</SelectItem>
-            <SelectItem value="organisme">Organisme</SelectItem>
-            <SelectItem value="amateur">Amateur de mode</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="text-white space-y-4">
+        <Label className="text-white font-light tracking-wide text-md">
+          Votre profil : * <span className="text-gray-400 text-sm">(sélectionnez au moins un)</span>
+        </Label>
+        <div className="grid grid-cols-2 gap-4">
+          <button
+            type="button"
+            onClick={() => toggleRole("createur")}
+            className={`p-6 rounded-lg border text-center transition-all ${
+              roles.includes("createur")
+                ? "border-white bg-white/10"
+                : "border-gray-700 bg-transparent hover:border-gray-500"
+            }`}
+          >
+            <Palette className="h-8 w-8 mx-auto mb-3" />
+            <p className="font-light text-sm tracking-wide">Créateur de mode</p>
+            <p className="text-gray-400 text-xs mt-1 font-light">Design, création, vente</p>
+          </button>
+          <button
+            type="button"
+            onClick={() => toggleRole("consommateur")}
+            className={`p-6 rounded-lg border text-center transition-all ${
+              roles.includes("consommateur")
+                ? "border-white bg-white/10"
+                : "border-gray-700 bg-transparent hover:border-gray-500"
+            }`}
+          >
+            <ShoppingBag className="h-8 w-8 mx-auto mb-3" />
+            <p className="font-light text-sm tracking-wide">Passionné de mode</p>
+            <p className="text-gray-400 text-xs mt-1 font-light">Achat, exploration, inspiration</p>
+          </button>
+        </div>
       </div>
 
       <Button
-        onClick={handleNext}
-        disabled={!role}
+        onClick={onNext}
+        disabled={roles.length === 0}
         className="text-black w-full bg-white/95 hover:bg-gray-200 font-light tracking-[0.1em] uppercase py-3 disabled:bg-gray-200"
       >
         Suivant <ChevronRight className="text-black ml-2 h-4 w-4" />
@@ -125,155 +140,23 @@ const RoleSelectionStep = ({ role, setRole, onNext }: any) => {
   )
 }
 
-// Step 2: Personal & Professional Info
 const PersonalInfoStep = ({ 
-  role, 
+  roles,
   firstName, setFirstName,
   lastName, setLastName,
-  companyName, setCompanyName,
   brandName, setBrandName,
-  organizationType, setOrganizationType,
   speciality, setSpeciality,
   onNext, onPrev 
 }: any) => {
   const handleNext = () => {
-    // Basic validation
     if (!firstName || !lastName) return
-    
-    // Role-specific validation
-    if (role === "createur" && !brandName) return
-    if ((role === "prestataire" || role === "industrie") && !companyName) return
-    if (role === "organisme" && !organizationType) return
-    
+    if (roles.includes("createur") && !brandName) return
     onNext()
-  }
-
-  const renderRoleFields = () => {
-    switch (role) {
-      case "createur":
-        return (
-          <>
-            <div className="text-white space-y-2">
-              <Label htmlFor="brandName" className="text-white font-light tracking-wide text-md">
-                Nom de marque *
-              </Label>
-              <Input
-                id="brandName"
-                placeholder="Votre marque"
-                value={brandName}
-                onChange={(e) => setBrandName(e.target.value)}
-                className="text-white border-gray-800 focus:border-white font-light"
-              />
-            </div>
-            <div className="text-white space-y-2">
-              <Label htmlFor="speciality" className="text-white font-light tracking-wide text-md">
-                Spécialité
-              </Label>
-              <Select value={speciality} onValueChange={setSpeciality}>
-                <SelectTrigger className="text-white border-gray-700 z-10 bg-transparent">
-                  <SelectValue placeholder="Votre spécialité" />
-                </SelectTrigger>
-                <SelectContent className="text-white border-gray-700 z-10 bg-black/95">
-                  <SelectItem value="pret-a-porter">Prêt-à-porter</SelectItem>
-                  <SelectItem value="haute-couture">Haute couture</SelectItem>
-                  <SelectItem value="accessoires">Accessoires</SelectItem>
-                  <SelectItem value="chaussures">Chaussures</SelectItem>
-                  <SelectItem value="lingerie">Lingerie</SelectItem>
-                  <SelectItem value="sport">Vêtements de sport</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </>
-        )
-      
-      case "prestataire":
-        return (
-          <>
-            <div className="text-white space-y-2">
-              <Label htmlFor="companyName" className="text-white font-light tracking-wide text-md">
-                Nom de l'entreprise *
-              </Label>
-              <Input
-                id="companyName"
-                placeholder="Votre entreprise"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                className="text-white border-gray-800 focus:border-white font-light"
-              />
-            </div>
-            <div className="text-white space-y-2">
-              <Label htmlFor="speciality" className="text-white font-light tracking-wide text-md">
-                Type de prestation
-              </Label>
-              <Select value={speciality} onValueChange={setSpeciality}>
-                <SelectTrigger className="text-white border-gray-700 z-10 bg-transparent">
-                  <SelectValue placeholder="Votre spécialité" />
-                </SelectTrigger>
-                <SelectContent className="text-white border-gray-700 z-10 bg-black/95">
-                  <SelectItem value="artisanat">Artisanat</SelectItem>
-                  <SelectItem value="textile">Matières textiles</SelectItem>
-                  <SelectItem value="mannequinat">Mannequinat</SelectItem>
-                  <SelectItem value="photographie">Photographie</SelectItem>
-                  <SelectItem value="technologie">Technologie mode</SelectItem>
-                  <SelectItem value="other">Autres</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </>
-        )
-      
-      case "organisme":
-        return (
-          <div className="text-white space-y-2">
-            <Label htmlFor="organizationType" className="text-white font-light tracking-wide text-md">
-              Type d'organisme *
-            </Label>
-            <Select value={organizationType} onValueChange={setOrganizationType}>
-              <SelectTrigger className="text-white border-gray-700 z-10 bg-transparent">
-                <SelectValue placeholder="Type d'organisme" />
-              </SelectTrigger>
-              <SelectContent className="text-white border-gray-700 z-10 bg-black/95">
-                <SelectItem value="agence">Agence</SelectItem>
-                <SelectItem value="association">Association</SelectItem>
-                <SelectItem value="syndicat">Syndicat</SelectItem>
-                <SelectItem value="federation">Fédération</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        )
-      
-      case "amateur":
-        return (
-          <div className="text-white space-y-2">
-            <Label htmlFor="speciality" className="text-white font-light tracking-wide text-md">
-              Centres d'intérêt
-            </Label>
-            <Select value={speciality} onValueChange={setSpeciality}>
-              <SelectTrigger className="text-white border-gray-700 z-10 bg-transparent">
-                <SelectValue placeholder="Vos intérêts mode" />
-              </SelectTrigger>
-              <SelectContent className="text-white border-gray-700 z-10 bg-black/95">
-                <SelectItem value="tendances">Tendances mode</SelectItem>
-                <SelectItem value="vintage">Mode vintage</SelectItem>
-                <SelectItem value="luxe">Mode de luxe</SelectItem>
-                <SelectItem value="streetwear">Streetwear</SelectItem>
-                <SelectItem value="durable">Mode durable</SelectItem>
-                <SelectItem value="defiles">Défilés</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        )
-      
-      default:
-        return null
-    }
   }
 
   const isValid = () => {
     if (!firstName || !lastName) return false
-    if (role === "createur" && !brandName) return false
-    if ((role === "prestataire" || role === "industrie") && !companyName) return false
-    if (role === "organisme" && !organizationType) return false
+    if (roles.includes("createur") && !brandName) return false
     return true
   }
 
@@ -306,7 +189,20 @@ const PersonalInfoStep = ({
         </div>
       </div>
 
-      {renderRoleFields()}
+      {roles.includes("createur") && (
+        <div className="text-white space-y-2">
+          <Label htmlFor="brandName" className="text-white font-light tracking-wide text-md">
+            Nom de marque *
+          </Label>
+          <Input
+            id="brandName"
+            placeholder="Votre marque"
+            value={brandName}
+            onChange={(e) => setBrandName(e.target.value)}
+            className="text-white border-gray-800 focus:border-white font-light"
+          />
+        </div>
+      )}
 
       <div className="text-white flex gap-3">
         <Button
@@ -329,7 +225,6 @@ const PersonalInfoStep = ({
   )
 }
 
-// Step 3: Account Creation
 const AccountCreationStep = ({ 
   email, setEmail,
   password, setPassword,
@@ -412,48 +307,17 @@ const AccountCreationStep = ({
   )
 }
 
-// Step indicator component
-const StepIndicator = ({ currentStep, totalSteps }: any) => {
-  return (
-    <div className="flex items-center justify-center space-x-2 mb-10 w-full">
-      {Array.from({ length: totalSteps }, (_, i) => (
-        <div key={i} className="flex items-center">
-          <div
-            className={`w-10 h-10 rounded-full flex items-center justify-center font-medium transition-all duration-300 ${
-              i + 1 <= currentStep
-                ? 'bg-white/95 text-black shadow-lg'
-                : 'bg-gray-400 text-gray-500'
-            }`}
-          >
-            {i + 1}
-          </div>
-          {i < totalSteps - 1 && (
-            <div
-              className={`w-32 h-0.5 mx-2 transition-all duration-300 ${
-                i + 1 < currentStep ? 'bg-white/95 text-black' : 'bg-gray-400'
-              }`}
-            />
-          )}
-        </div>
-      ))}
-    </div>
-  )
-}
-// Multi-step Signup Component
 const SignupForm = ({ onError, onSignup }: any) => {
   const [currentStep, setCurrentStep] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   
-  // Form state
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [role, setRole] = useState("")
+  const [roles, setRoles] = useState<UserRole[]>([])
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-  const [companyName, setCompanyName] = useState("")
   const [brandName, setBrandName] = useState("")
-  const [organizationType, setOrganizationType] = useState("")
   const [speciality, setSpeciality] = useState("")
 
   const handleSubmit = (e: any) => {
@@ -467,13 +331,15 @@ const SignupForm = ({ onError, onSignup }: any) => {
       return
     }
 
-    // Simulate API call
     setTimeout(() => {
       setIsLoading(false)
       onSignup({
         email,
         password,
-        role,
+        roles,
+        firstName,
+        lastName,
+        brandName,
       })
     }, 2000)
   }
@@ -483,29 +349,23 @@ const SignupForm = ({ onError, onSignup }: any) => {
 
   return (
     <div className="text-white mt-6">
-      {/* <StepIndicator currentStep={currentStep} totalSteps={3}/> */}
-
       {currentStep === 1 && (
         <RoleSelectionStep
-          role={role}
-          setRole={setRole}
+          roles={roles}
+          setRoles={setRoles}
           onNext={nextStep}
         />
       )}
 
       {currentStep === 2 && (
         <PersonalInfoStep
-          role={role}
+          roles={roles}
           firstName={firstName}
           setFirstName={setFirstName}
           lastName={lastName}
           setLastName={setLastName}
-          companyName={companyName}
-          setCompanyName={setCompanyName}
           brandName={brandName}
           setBrandName={setBrandName}
-          organizationType={organizationType}
-          setOrganizationType={setOrganizationType}
           speciality={speciality}
           setSpeciality={setSpeciality}
           onNext={nextStep}
@@ -530,21 +390,18 @@ const SignupForm = ({ onError, onSignup }: any) => {
   )
 }
 
-// Main Authentication Component
 export default function Authentication() {
   const [error, setError] = useState("")
   const [showSuccessAlert, setShowSuccessAlert] = useState(false)
 
-  // State pour les users
   const [users, setUsers] = useState([
     {
       email: "test@example.com",
       password: "password123",
-      role: "creator",
+      roles: ["createur", "consommateur"] as UserRole[],
     },
   ])
 
-  // Ajout d'un nouvel utilisateur
   const handleSignup = (newUser: any) => {
     if (users.some((u) => u.email === newUser.email)) {
       setError("Cet email est déjà utilisé.")
@@ -560,11 +417,8 @@ export default function Authentication() {
 
   return (
     <div className="text-white min-h-screen bg-gradient-to-r from-black/90 to-black">
-      {/* Background Pattern */}
       <div className="text-white relative z-10 min-h-screen grid lg:grid-cols-2">
-        {/* Left Side - Hero Section */}
         <div className="hidden lg:flex flex-col justify-center items-center p-12 bg-white/95 relative overflow-hidden">
-          {/* Animated Background Elements */}
           <Image
             src="/img/login2.png"
             alt="Login Fashion"
@@ -574,11 +428,10 @@ export default function Authentication() {
           />
         </div>
 
-        {/* Right Side - Authentication Forms */}
         <div className="relative text-white flex flex-col md:h-screen overflow-y-scroll md:py-14 items-center justify-between">
           {showSuccessAlert && (
             <Alert className="fixed mx-5 bottom-6 md:right-0 max-w-fit bg-gray-800 shadow-lg shadow-black border-0 animate-fade-in duration-75 z-10">
-              <AlertTitle>Inscription réussie ! ✨</AlertTitle>
+              <AlertTitle>Inscription réussie !</AlertTitle>
               <AlertDescription>
                 Vous pouvez maintenant vous connecter.
               </AlertDescription>
@@ -649,7 +502,6 @@ export default function Authentication() {
         </div>
       </div>
 
-      {/* Floating Elements for Mobile */}
       <div className="text-white lg:hidden fixed inset-0 pointer-events-none overflow-hidden">
         <div className="text-white absolute top-1/4 right-4 w-16 h-16 bg-gray-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
         <div className="text-white absolute bottom-1/4 left-4 w-12 h-12 bg-gray-200/30 rounded-full blur-xl animate-pulse delay-2000"></div>

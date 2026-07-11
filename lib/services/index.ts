@@ -1,0 +1,7 @@
+export { productService } from "./product-service"
+export { collectionService } from "./collection-service"
+export { stylisteService } from "./styliste-service"
+export { articleService } from "./article-service"
+export { atelierService } from "./atelier-service"
+export { collaborationService } from "./collaboration-service"
+export { fondationService } from "./fondation-service"

@@ -1,21 +1,25 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { LogOut, Menu, X, User, ShoppingCart, Bell, UserCircle, Settings, ChevronDown } from "lucide-react"
+import { Bell, ChevronDown, LogOut, Menu, Settings, ShoppingCart, User, UserCircle, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAnimation } from "@/animations"
-import { Dropdown, DropdownItem, DropdownSeparator } from "@/components/ui/custom-dropdown"
+import { Dropdown, DropdownItem } from "@/components/ui/custom-dropdown"
+import { userStore } from "@/lib/stores/user-store"
+import type { UserRole } from "@/types/auth"
 
 function useHeaderState() {
   const pathname = usePathname()
   const router = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [roles, setRoles] = useState<UserRole[]>([])
   const [atTop, setAtTop] = useState(true)
 
   useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true")
+    setIsLoggedIn(userStore.isLoggedIn)
+    setRoles(userStore.getRoles())
 
     const onScroll = () => {
       setAtTop(window.scrollY < window.innerHeight)
@@ -32,20 +36,21 @@ function useHeaderState() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn")
-    localStorage.removeItem("userRole")
-    localStorage.removeItem("userEmail")
+    userStore.logout()
     setIsLoggedIn(false)
+    setRoles([])
     router.push("/")
   }
 
   const shouldInvert = pathname === "/" && atTop
+  const isCreator = roles.includes("createur")
+  const isConsumer = roles.includes("consommateur")
 
-  return { isLoggedIn, isActive, handleLogout, shouldInvert }
+  return { isLoggedIn, isActive, handleLogout, shouldInvert, isCreator, isConsumer }
 }
 
 export function HeaderDesktop() {
-  const { isLoggedIn, isActive, handleLogout, shouldInvert } = useHeaderState()
+  const { isLoggedIn, isActive, handleLogout, shouldInvert, isCreator, isConsumer } = useHeaderState()
 
   return (
     <header
@@ -63,6 +68,7 @@ export function HeaderDesktop() {
             {[
               ["/", "Couverture"],
               ["/collections", "Collections"],
+              ["/ateliers", "Ateliers"],
               ["/stylistes", "Stylistes"],
               ["/ethique", "Éthique"],
               ["/recyclage", "Recyclage"],
@@ -83,11 +89,13 @@ export function HeaderDesktop() {
           <div className="flex items-center space-x-4">
             {isLoggedIn ? (
               <>
-                <Link href="/shopping-cart">
-                  <Button variant="ghost" size="sm" className="text-xs tracking-[0.1em] font-light uppercase">
-                    <ShoppingCart className="h-5 w-5"/>
-                  </Button>
-                </Link>
+                {isConsumer && (
+                  <Link href="/shopping-cart">
+                    <Button variant="ghost" size="sm" className="text-xs tracking-[0.1em] font-light uppercase">
+                      <ShoppingCart className="h-5 w-5"/>
+                    </Button>
+                  </Link>
+                )}
                 <Link href="/notifications">
                   <Button variant="ghost" size="sm" className="text-xs tracking-[0.1em] font-light uppercase">
                     <Bell className="h-5 w-5" />
@@ -107,6 +115,14 @@ export function HeaderDesktop() {
                       <span>Mon Compte</span>
                     </DropdownItem>
                   </Link>
+                  {isCreator && (
+                    <Link href="/shop">
+                      <DropdownItem className="flex items-center">
+                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        <span>Ma boutique</span>
+                      </DropdownItem>
+                    </Link>
+                  )}
                   <Link href="/settings">
                     <DropdownItem className="flex items-center">
                       <Settings className="mr-2 h-4 w-4" />
@@ -137,9 +153,8 @@ export function HeaderDesktop() {
 }
 
 export function HeaderMobile() {
-  const { isLoggedIn, isActive, handleLogout, shouldInvert } = useHeaderState()
+  const { isLoggedIn, isActive, handleLogout, shouldInvert, isConsumer } = useHeaderState()
   const [open, setOpen] = useState(false)
-  const [lang, setLang] = useState("fr")
 
   return (
     <header
@@ -153,11 +168,13 @@ export function HeaderMobile() {
         </Link>
         {isLoggedIn && (
           <div className="flex">
-            <Link href="/cart" onClick={() => setOpen(false)}>
-              <Button variant="ghost" className="w-full text-xs uppercase font-light tracking-widest">
-                <ShoppingCart className="h-4 w-4" />
-              </Button>
-            </Link>
+            {isConsumer && (
+              <Link href="/shopping-cart" onClick={() => setOpen(false)}>
+                <Button variant="ghost" className="w-full text-xs uppercase font-light tracking-widest">
+                  <ShoppingCart className="h-4 w-4" />
+                </Button>
+              </Link>
+            )}
             <Link href="/notifications" onClick={() => setOpen(false)}>
               <Button variant="ghost" className="w-full text-xs uppercase font-light tracking-widest">
                 <Bell className="ml-2 h-4 w-4" />
@@ -178,6 +195,7 @@ export function HeaderMobile() {
               {[
                 ["/", "Couverture"],
                 ["/collections", "Collections"],
+                ["/ateliers", "Ateliers"],
                 ["/stylistes", "Stylistes"],
                 ["/ethique", "Éthique"],
                 ["/recyclage", "Recyclage"],
