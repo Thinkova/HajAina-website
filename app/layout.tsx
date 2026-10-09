@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 import './fonts.css'
+import { LanguageProvider } from '@/lib/language-context'
 
 export const metadata: Metadata = {
   title: "Haj'Aina",
@@ -29,7 +30,9 @@ html {
         `}</style>
       </head>
       <body>
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   )

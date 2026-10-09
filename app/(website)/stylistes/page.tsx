@@ -8,9 +8,10 @@ import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { stylisteService } from "@/lib/services"
+import { useLanguage } from "@/lib/language-context"
 
 export default function StylistesPage() {
-
+  const { t } = useLanguage()
   const stylistes = stylisteService.getAll()
 
   return (

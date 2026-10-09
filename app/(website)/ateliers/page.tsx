@@ -9,9 +9,11 @@ import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { atelierService, stylisteService } from "@/lib/services"
+import { useLanguage } from "@/lib/language-context"
 
 export default function AteliersPage() {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const { t } = useLanguage()
   const allAteliers = atelierService.getAll()
   const allStylistes = stylisteService.getAll()
 

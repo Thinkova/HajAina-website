@@ -10,9 +10,11 @@ import Image from "next/image"
 import Header from "@/components/header"
 import Footer from "@/components/footer" 
 import { articleService } from "@/lib/services"
+import { useLanguage } from "@/lib/language-context"
 
 export default function MagazinePage() {
   const [selectedCategory, setSelectedCategory] = useState("all")
+  const { t } = useLanguage()
   const categories = ["all", "Tradition", "Durabilité", "Portrait", "Tendances", "Société", "Matériaux"]
   const articles = articleService.getAll()
   const filteredArticles =

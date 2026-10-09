@@ -13,6 +13,7 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import CustomCursor from '@/components/custom-cursor'
 import { useAnimation } from "@/animations"
+import { useLanguage } from "@/lib/language-context"
 
 export default function HajAinaFashion() {
   useAnimation([
@@ -27,26 +28,28 @@ export default function HajAinaFashion() {
   ]);
   
   const [currentSlide, setCurrentSlide] = useState(0)
+  const { t } = useLanguage()
+
   const featuredDesigners = [
     {
       name: "Miora Rasoanaivo",
-      specialty: "Couture Traditionnelle",
+      specialty: t("designer.1.specialty"),
       image: "/img/Miora.jpg",
-      description: "Fusion entre tradition malgache et modernité",
+      description: t("designer.1.description"),
       id: "1", 
     },
     {
       name: "Hery Andriantsoa",
-      specialty: "Mode Durable",
+      specialty: t("designer.2.specialty"),
       image: "/img/Hery.jpg",
-      description: "Pionnier de la mode éco-responsable à Madagascar",
+      description: t("designer.2.description"),
       id: "2", 
     },
     {
       name: "Lalaina Rakoto",
-      specialty: "Prêt-à-Porter",
+      specialty: t("designer.3.specialty"),
       image: "/img/Lalaina.jpg",
-      description: "Créations contemporaines aux influences malgaches",
+      description: t("designer.3.description"),
       id: "3", 
     },
   ]
@@ -54,59 +57,56 @@ export default function HajAinaFashion() {
   const collections = [
     {
       id: "1", 
-      title: "Collection Eté 2024",
+      title: t("collection.item1.title"),
       designer: "Miora Rasoanaivo",
       image: "/img/Collection3.jpg",
-      category: "Couture",
+      category: t("collection.item1.category"),
     },
     {
       id: "2", 
-      title: "Eco-Luxe Series",
+      title: t("collection.item2.title"),
       designer: "Hery Andriantsoa",
       image: "/img/Collection1.jpg",
-      category: "Durable",
+      category: t("collection.item2.category"),
     },
     {
       id: "3", 
-      title: "Urban Malagasy",
+      title: t("collection.item3.title"),
       designer: "Lalaina Rakoto",
       image: "/img/Collection2.jpg",
-      category: "Streetwear",
+      category: t("collection.item3.category"),
     },
     {
       id: "4", 
-      title: "Heritage Moderne",
+      title: t("collection.item4.title"),
       designer: "Miora Rasoanaivo",
       image: "/img/Collection4.jpg",
-      category: "Fusion",
+      category: t("collection.item4.category"),
     },
   ]
 
   const collaborationAnnouncements = [
     {
       id: "ann1",
-      title: "Recherche Styliste pour Projet Zéro Déchet",
+      title: t("collab.1.title"),
       company: "Mode Circulaire",
-      description:
-        "Nous recherchons un styliste engagé pour notre prochaine collection capsule zéro déchet, avec une expertise en upcycling et design minimaliste.",
+      description: t("collab.1.desc"),
       image: "/img/Collab1.jpg",
       link: "/collaborations",
     },
     {
       id: "ann2",
-      title: "Appel à Designers pour Tissus Innovants",
+      title: t("collab.2.title"),
       company: "Future Fibres Lab",
-      description:
-        "Opportunité de collaborer sur le développement de textiles biodégradables et smart-fabrics. Idéal pour les designers passionnés par la recherche et l'innovation.",
+      description: t("collab.2.desc"),
       image: "/img/Collab2.jpg",
       link: "/collaborations",
     },
     {
       id: "ann3",
-      title: "Partenariat pour Campagne Marketing Mode Éthique",
+      title: t("collab.3.title"),
       company: "Conscience & Style",
-      description:
-        "Agence de communication spécialisée dans le développement durable, cherche influenceurs ou stylistes pour promouvoir une nouvelle ligne de vêtements éthiques.",
+      description: t("collab.3.desc"),
       image: "/img/Collab3.jpg",
       link: "/collaborations",
     },
@@ -139,24 +139,23 @@ export default function HajAinaFashion() {
         {/* Hero Text Content */}
         <div className="relative z-20 text-white px-6 md:px-12 lg:px-20 max-w-3xl md:ml-[45%] text-center md:text-left md:-translate-y-5">
           <h1 className="hero-title invisible text-4xl sm:text-5xl md:text-8xl font-extralight tracking-[0.2em] mb-10 serif-font">
-            HAJ'AINA
+            HAJ&apos;AINA
           </h1>
           <div className="hero-subtext invisible flex items-center mb-10 gap-3">
             <p className="text-lg md:text-xl font-meliora font-light tracking-[0.05em] opacity-90">
-              Mihaja, Manaja Aina, Manaja Tantara
+              {t("hero.tagline")}
             </p> 
-            <Image src="/img/madagascar.png" alt="" width="20" height="0" className="mt-1"/>
+            <Image src="/img/madagascar.png" alt="" width={20} height={0} className="mt-1"/>
           </div>
           <p className="hero-description invisible text-base md:text-lg mb-10 leading-relaxed font-light opacity-80 md:text-justify">
-            Haj'Aina façonne l'histoire de la mode éthique et durable à Madagascar aux côtés de ses plus grands acteurs.
-            Rejoignez-nous et participez vous aussi à cette démarche quotidienne vers une mode plus responsable.
+            {t("hero.description")}
           </p>
           <Link href="/collections">
             <Button
               size="lg"
               className="hero-button invisible bg-green-700 text-white hover:bg-green-600 text-xs tracking-[0.15em] px-8 py-4 font-normal uppercase"
             >
-              Explorer les Collections
+              {t("hero.cta")}
               <ArrowRight className="ml-3 h-4 w-4" />
             </Button>
           </Link>
@@ -181,7 +180,7 @@ export default function HajAinaFashion() {
             {Array(20)
               .fill("")
               .map((_, i) => (
-                <div key={i}  className="flex gap-12">
+                <div key={i} className="flex gap-12">
                   <span>extend bc</span>
                   <span>conserfashion</span>
                   <span>made for woman</span>
@@ -196,9 +195,9 @@ export default function HajAinaFashion() {
             {Array(20)
               .fill("")
               .map((_, i) => (
-                <div key={i}  className="flex gap-12">
+                <div key={i} className="flex gap-12">
                   <span>IFM Madagascar</span>
-                  <span>Mode ethique et durable</span>
+                  <span>{t("marquee.modeEthique")}</span>
                 </div>
               ))}
           </div>
@@ -209,11 +208,10 @@ export default function HajAinaFashion() {
       <section className="collections-section py-24 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-extralight tracking-[0.2em] mb-6 serif-font">Collections Phares</h2>
+            <h2 className="text-4xl md:text-5xl font-extralight tracking-[0.2em] mb-6 serif-font">{t("collections.title")}</h2>
             <div className="w-32 h-px bg-black mx-auto mb-8 separator" />
             <p className="text-lg text-gray-600 font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
-              Chaque collection raconte une histoire unique, mêlant l'héritage culturel malgache aux tendances
-              contemporaines les plus raffinées
+              {t("collections.subtitle")}
             </p>
           </div>
 
@@ -245,10 +243,9 @@ export default function HajAinaFashion() {
                         <h3 className="text-4xl font-extralight tracking-[0.1em] serif-font leading-tight">
                           {collection.title}
                         </h3>
-                        <p className="text-gray-600 text-lg font-light tracking-wide">Par {collection.designer}</p>
+                        <p className="text-gray-600 text-lg font-light tracking-wide">{t("collections.by")} {collection.designer}</p>
                         <p className="text-gray-700 leading-relaxed font-light text-lg">
-                          Une exploration unique de l'identité malgache à travers des créations contemporaines qui
-                          célèbrent notre héritage tout en embrassant l'innovation et la durabilité.
+                          {t("collections.description")}
                         </p>
                         
                         <div className="flex gap-4">
@@ -259,7 +256,7 @@ export default function HajAinaFashion() {
                               size="sm"
                               className="tracking-[0.1em] font-light uppercase text-xs bg-transparent"
                             >
-                              Découvrir
+                              {t("collections.discover")}
                               <ArrowRight className="ml-3 h-4 w-4" /> 
                             </Button>
                           </Link>
@@ -291,11 +288,10 @@ export default function HajAinaFashion() {
       <section className="designers-section py-24">
         <div className="container relative mx-auto px-6">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-extralight tracking-[0.2em] mb-6 serif-font">Stylistes Malagasy</h2>
+            <h2 className="text-5xl font-extralight tracking-[0.2em] mb-6 serif-font">{t("designers.title")}</h2>
             <div className="w-32 h-px bg-black mx-auto mb-8" />
             <p className="text-gray-600 max-w-3xl mx-auto font-light leading-relaxed text-lg">
-              Rencontrez les visionnaires qui redéfinissent la mode malgache avec créativité, passion et conscience
-              environnementale
+              {t("designers.subtitle")}
             </p>
             
             <div className="absolute top-[-8rem] md:top-0 right-16">
@@ -349,24 +345,23 @@ export default function HajAinaFashion() {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-5xl font-extralight tracking-[0.2em] mb-8 serif-font">Mode Éthique</h2>
+              <h2 className="text-5xl font-extralight tracking-[0.2em] mb-8 serif-font">{t("ethique.title")}</h2>
               <div className="w-32 h-px bg-white mb-10" />
               <p className="text-xl leading-relaxed mb-10 text-gray-300 font-light">
-                Nous croyons en une mode qui respecte les artisans, l'environnement et les traditions. Chaque pièce
-                raconte une histoire de durabilité, d'authenticité et de respect mutuel.
+                {t("ethique.description")}
               </p>
               <div className="space-y-6 mb-12">
                 <div className="flex items-center space-x-4">
                   <Heart className="h-6 w-6 text-white flex-shrink-0" />
-                  <span className="font-light tracking-wide">Commerce équitable avec les artisans locaux</span>
+                  <span className="font-light tracking-wide">{t("ethique.point1")}</span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <Recycle className="h-6 w-6 text-white flex-shrink-0" />
-                  <span className="font-light tracking-wide">Matériaux durables et recyclés</span>
+                  <span className="font-light tracking-wide">{t("ethique.point2")}</span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <Star className="h-6 w-6 text-white flex-shrink-0" />
-                  <span className="font-light tracking-wide">Préservation des techniques traditionnelles</span>
+                  <span className="font-light tracking-wide">{t("ethique.point3")}</span>
                 </div>
               </div>
               <Link href="/ethique">
@@ -374,7 +369,7 @@ export default function HajAinaFashion() {
                   variant="outline"
                   className="border-white text-white hover:bg-white hover:text-black bg-transparent font-light tracking-[0.1em] uppercase px-8 py-3"
                 >
-                  En Savoir Plus
+                  {t("ethique.learnMore")}
                 </Button>
               </Link>
             </div>
@@ -395,11 +390,10 @@ export default function HajAinaFashion() {
       <section className="recyclage-section py-24 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-extralight tracking-[0.2em] mb-6 serif-font">Espace Recyclage</h2>
+            <h2 className="text-5xl font-extralight tracking-[0.2em] mb-6 serif-font">{t("recyclage.title")}</h2>
             <div className="w-32 h-px bg-black mx-auto mb-8" />
             <p className="text-gray-600 max-w-3xl mx-auto font-light leading-relaxed text-lg">
-              Donnez une seconde vie à vos vêtements. Notre programme de recyclage transforme vos anciennes pièces en
-              nouvelles créations uniques, dans une démarche circulaire et responsable.
+              {t("recyclage.subtitle")}
             </p>
           </div>
 
@@ -414,16 +408,16 @@ export default function HajAinaFashion() {
               <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
             </div>
             <div className="space-y-8">
-              <h3 className="text-3xl font-extralight tracking-[0.1em] serif-font">Comment ça marche ?</h3>
+              <h3 className="text-3xl font-extralight tracking-[0.1em] serif-font">{t("recyclage.howTitle")}</h3>
               <div className="space-y-8">
                 <div className="flex items-start space-x-6">
                   <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center text-sm font-light flex-shrink-0">
                     1
                   </div>
                   <div>
-                    <h4 className="font-light mb-2 text-lg tracking-wide">Déposez vos vêtements</h4>
+                    <h4 className="font-light mb-2 text-lg tracking-wide">{t("recyclage.step1.title")}</h4>
                     <p className="text-gray-600 font-light leading-relaxed">
-                      Apportez vos pièces usagées dans nos points de collecte partenaires
+                      {t("recyclage.step1.desc")}
                     </p>
                   </div>
                 </div>
@@ -432,9 +426,9 @@ export default function HajAinaFashion() {
                     2
                   </div>
                   <div>
-                    <h4 className="font-light mb-2 text-lg tracking-wide">Transformation créative</h4>
+                    <h4 className="font-light mb-2 text-lg tracking-wide">{t("recyclage.step2.title")}</h4>
                     <p className="text-gray-600 font-light leading-relaxed">
-                      Nos stylistes reimaginent vos vêtements en nouvelles créations uniques
+                      {t("recyclage.step2.desc")}
                     </p>
                   </div>
                 </div>
@@ -443,16 +437,16 @@ export default function HajAinaFashion() {
                     3
                   </div>
                   <div>
-                    <h4 className="font-light mb-2 text-lg tracking-wide">Nouvelle vie</h4>
+                    <h4 className="font-light mb-2 text-lg tracking-wide">{t("recyclage.step3.title")}</h4>
                     <p className="text-gray-600 font-light leading-relaxed">
-                      Récupérez vos pièces transformées ou découvrez notre collection recyclée
+                      {t("recyclage.step3.desc")}
                     </p>
                   </div>
                 </div>
               </div>
               <Link href="/recyclage">
                 <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase px-8 py-3 mt-8">
-                  Participer au Programme
+                  {t("recyclage.cta")}
                   <Recycle className="ml-3 h-4 w-4" />
                 </Button>
               </Link>
@@ -465,11 +459,10 @@ export default function HajAinaFashion() {
       <section className="collaborations-section py-24">
         <div className="container mx-auto px-6">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-extralight tracking-[0.2em] mb-6 serif-font">Opportunités de Collaboration</h2>
+            <h2 className="text-4xl md:text-5xl font-extralight tracking-[0.2em] mb-6 serif-font">{t("collabs.title")}</h2>
             <div className="w-32 h-px bg-black mx-auto mb-8" />
             <p className="text-gray-600 max-w-3xl mx-auto font-light leading-relaxed text-lg">
-              Découvrez les dernières annonces de collaboration et connectez-vous avec des partenaires partageant les
-              mêmes valeurs dans l'industrie de la mode éthique.
+              {t("collabs.subtitle")}
             </p>
           </div>
 
@@ -503,7 +496,7 @@ export default function HajAinaFashion() {
                         size="sm"
                         className="tracking-[0.1em] font-light uppercase text-xs bg-transparent"
                       >
-                        Voir l'annonce
+                        {t("collabs.viewAnnouncement")}
                         <ArrowRight className="ml-2 h-3 w-3" />
                       </Button>
                     </Link>
@@ -515,7 +508,7 @@ export default function HajAinaFashion() {
           <div className="text-center mt-16">
             <Link href="/collaborations">
               <Button className="bg-black text-white hover:bg-gray-800 font-light tracking-[0.1em] uppercase px-8 py-3">
-                Voir toutes les annonces
+                {t("collabs.viewAll")}
                 <Handshake className="ml-3 h-4 w-4" />
               </Button>
             </Link>
@@ -529,30 +522,29 @@ export default function HajAinaFashion() {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-5xl font-extralight tracking-[0.2em] mb-8 serif-font">
-                Créations uniques
+                {t("qrcode.title")}
               </h2>
               <div className="w-32 h-px bg-black mb-10" />
               <p className="text-xl leading-relaxed mb-10 text-gray-800 font-light">
-                Offrez à chaque pièce de votre collection une identité propre grâce à un QR Code unique. 
-                Le scanner permettra de découvrir l’histoire du vêtement, ses valeurs et son créateur.
+                {t("qrcode.description")}
               </p>
               <div className="space-y-6 mb-12">
                 <div className="flex items-center space-x-4">
                   <Heart className="h-8 w-8 text-black flex-shrink-0" />
                   <span className="font-light tracking-wide">
-                    Identité du produit
+                    {t("qrcode.point1")}
                   </span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <Handshake className="h-6 w-6 text-black flex-shrink-0" />
                   <span className="font-light tracking-wide">
-                    Transparence
+                    {t("qrcode.point2")}
                   </span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <Recycle className="h-6 w-6 text-black flex-shrink-0" />
                   <span className="font-light tracking-wide">
-                    Traçabilité
+                    {t("qrcode.point3")}
                   </span>
                 </div>
               </div>
@@ -561,7 +553,7 @@ export default function HajAinaFashion() {
                   variant="outline"
                   className="border-black text-black hover:bg-black hover:text-white bg-transparent font-light tracking-[0.1em] uppercase px-8 py-3"
                 >
-                  Créer une collection
+                  {t("qrcode.cta")}
                 </Button>
               </Link>
             </div>
@@ -579,20 +571,19 @@ export default function HajAinaFashion() {
       <section className="newsletter-section py-24 bg-white">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl font-extralight tracking-[0.2em] mb-6 serif-font">Restez Connecté</h2>
+            <h2 className="text-4xl font-extralight tracking-[0.2em] mb-6 serif-font">{t("newsletter.title")}</h2>
             <div className="w-32 h-px bg-black mx-auto mb-8" />
             <p className="text-gray-600 mb-12 font-light leading-relaxed text-lg">
-              Recevez les dernières actualités de la mode malgache, nos collections exclusives et les histoires
-              inspirantes de nos créateurs
+              {t("newsletter.subtitle")}
             </p>
             <div className="flex gap-4 max-w-lg mx-auto">
               <Input
                 type="email"
-                placeholder="Votre adresse email"
+                placeholder={t("newsletter.placeholder")}
                 className="border-gray-300 focus:border-black font-light tracking-wide"
               />
               <Button className="bg-black text-white hover:bg-gray-800 px-10 font-light tracking-[0.1em] uppercase">
-                S'abonner
+                {t("newsletter.subscribe")}
               </Button>
             </div>
           </div>

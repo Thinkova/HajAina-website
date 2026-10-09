@@ -7,10 +7,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { Recycle, MapPin, Clock, Gift, Truck, Scissors, Sparkles } from "lucide-react"
 import Image from "next/image"
 import Header from "@/components/header"
-import Link from "next/link" // Import Link
+import Link from "next/link"
 import Footer from "@/components/footer" 
+import { useLanguage } from "@/lib/language-context"
 
 export default function RecyclagePage() {
+  const { t } = useLanguage()
   const steps = [
     {
       icon: Truck,

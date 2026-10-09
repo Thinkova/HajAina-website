@@ -8,8 +8,10 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import Link from "next/link"
 import { fondationService } from "@/lib/services"
+import { useLanguage } from "@/lib/language-context"
 
 export default function EthiquePage() {
+  const { t } = useLanguage()
   const foundationValues = fondationService.getValues();
   const foundationImpacts = fondationService.getImpacts();
 

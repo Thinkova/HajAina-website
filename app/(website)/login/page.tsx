@@ -16,6 +16,7 @@ import SocialButton from "@/components/ui/social-button"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { userStore } from "@/lib/stores/user-store"
 import type { UserRole } from "@/types/auth"
+import { useLanguage } from "@/lib/language-context"
 
 const LoginForm = ({ onError, users }: any) => {
   const [email, setEmail] = useState("")
@@ -43,11 +44,12 @@ const LoginForm = ({ onError, users }: any) => {
     }
   }
 
+  const { t } = useLanguage()
   return (
     <form onSubmit={handleLogin} className="text-white space-y-6 mt-6">
       <div className="text-white space-y-2">
         <Label htmlFor="loginEmail" className="text-white font-light tracking-wide text-md">
-          Email
+          {t("login.email")}
         </Label>
         <Input
           id="loginEmail"
@@ -61,7 +63,7 @@ const LoginForm = ({ onError, users }: any) => {
       </div>
       <div className="text-white space-y-2">
         <Label htmlFor="loginPassword" className="text-white font-light tracking-wide text-md">
-          Mot de passe
+          {t("login.password")}
         </Label>
         <Input
           id="loginPassword"
@@ -77,7 +79,7 @@ const LoginForm = ({ onError, users }: any) => {
         type="submit"
         className="text-black w-full bg-white/95 hover:bg-gray-200 font-light tracking-[0.1em] uppercase py-3"
       >
-        Se connecter
+        {t("login.asConsumer")}
       </Button>
       <p className="text-white text-center text-md mt-6 font-light">
         Test : <span className="text-white font-semibold">test@example.com</span> / <span className="text-white font-semibold">password123</span>
@@ -391,6 +393,7 @@ const SignupForm = ({ onError, onSignup }: any) => {
 }
 
 export default function Authentication() {
+  const useLanguageHook = useLanguage()
   const [error, setError] = useState("")
   const [showSuccessAlert, setShowSuccessAlert] = useState(false)
 
@@ -454,7 +457,7 @@ export default function Authentication() {
                   </Link>
                 </div>
                 <CardTitle className="text-white text-4xl md:text-4xl font-extralight tracking-[0.2em] font-serif">
-                  Rejoignez-nous
+                  {useLanguageHook.t("login.subtitle")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-white px-12 py-2">
@@ -465,13 +468,13 @@ export default function Authentication() {
                       className="
                       text-white font-2xl font-extralight tracking-[0.2em] py-5 data-[state=active]:border-b data-[state=active]:border-white/80 transition-all duration-200"
                     >
-                      CONNEXION
+                      {useLanguageHook.t("login.title").toUpperCase()}
                     </TabsTrigger>
                     <TabsTrigger 
                       value="signup"
                       className="text-white font-5xl font-extralight tracking-[0.2em] py-5 data-[state=active]:border-b data-[state=active]:border-white/80 transition-all duration-200"
                     >
-                      INSCRIPTION
+                      {useLanguageHook.t("login.register").toUpperCase()}
                     </TabsTrigger>
                   </TabsList>
                   
